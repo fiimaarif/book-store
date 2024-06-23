@@ -1,3 +1,4 @@
+import Navbar from '@/components/Navbar';
 import { logout } from '@/utils/auth';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -15,13 +16,17 @@ export default function AdminDashboard() {
   }, []);
 
   return (
-    <div>
-      <h1>Dashboard Admin</h1>
-      <button onClick={logout} className="btn btn-danger">Logout</button>
-      <nav className="nav flex-column">
-        <Link href="/admin/users" className="nav-link">Manage Users</Link>
-        {/* Tambahkan link lain untuk menu admin lainnya */}
-      </nav>
+    <div className="container-fluid">
+      <div className="row">
+        <nav className="col-md-2 d-none d-md-block bg-light sidebar">
+          <Navbar />
+        </nav>
+        <main className="col-md-10 ms-sm-auto col-lg-10 px-md-4">
+          {/* Konten utama halaman admin */}
+          <h1>Admin Dashboard</h1>
+          {/* Isi konten lainnya */}
+        </main>
+      </div>
     </div>
   );
 }
