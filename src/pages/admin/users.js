@@ -1,3 +1,4 @@
+import Layout from '@/components/Layout';
 import { useEffect, useState } from 'react';
 
 export default function ManageUsers() {
@@ -31,7 +32,8 @@ export default function ManageUsers() {
   }, []);
 
   return (
-    <div className="container mt-5">
+    <Layout>
+      <div className="container mt-5">
       <h1>Manage Users</h1>
       <table className="table">
         <thead>
@@ -54,5 +56,6 @@ export default function ManageUsers() {
         </tbody>
       </table>
     </div>
+    </Layout>
   );
 }

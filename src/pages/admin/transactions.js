@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 
-export default function ManageBooks() {
+export default function Transaction() {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function ManageBooks() {
   return (
     <Layout>
       <div className="container mt-5">
-      <h1>Manage Books</h1>
+      <h1>Manage Transaction</h1>
       <Link href="/admin/books/new">
         <div className="btn btn-primary mb-3">Add New Book</div>
       </Link>
