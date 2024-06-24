@@ -7,7 +7,6 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('user'); // default role
   const router = useRouter();
 
   const handleRegister = async (e) => {
@@ -21,7 +20,7 @@ export default function Register() {
     const response = await fetch('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, password, role }),
+      body: JSON.stringify({ username, email, password }),
     });
 
     if (response.ok) {
@@ -80,19 +79,6 @@ export default function Register() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="role" className="form-label">Role</label>
-          <select
-            className="form-select"
-            id="role"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            required
-          >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
         </div>
         <button type="submit" className="btn btn-primary">Register</button>
       </form>

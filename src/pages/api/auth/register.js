@@ -8,7 +8,7 @@ export default async (req, res) => {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { username, email, password, role } = req.body;
+  const { username, email, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
@@ -17,7 +17,7 @@ export default async (req, res) => {
         username,
         email,
         password: hashedPassword,
-        role, // assign role from the request
+        role: 'user', // default role
       },
     });
     res.status(201).json({ user });
