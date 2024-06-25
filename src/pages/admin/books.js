@@ -58,7 +58,7 @@ export default function ManageBooks() {
               <td>{book.stock}</td>
               <td>
                 <Link href={`/admin/books/edit/${book.id}`}>
-                  <a className="btn btn-secondary btn-sm">Edit</a>
+                  <div className="btn btn-secondary btn-sm">Edit</div>
                 </Link>
                 <button
                   className="btn btn-danger btn-sm"

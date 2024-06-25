@@ -25,7 +25,7 @@ export default async (req, res) => {
       case 'POST':
         const { title, author, price, stock } = req.body;
         const newBook = await prisma.book.create({
-          data: { title, author, price, stock },
+          data: { title, author, price: parseFloat(price), stock: parseInt(stock) },
         });
         res.status(201).json(newBook);
         break;
@@ -34,6 +34,7 @@ export default async (req, res) => {
         res.status(405).end(`Method ${method} Not Allowed`);
     }
   } catch (error) {
+    console.log('error', error);
     console.error('Error handling books:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
