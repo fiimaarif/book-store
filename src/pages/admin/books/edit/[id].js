@@ -6,6 +6,8 @@ export default function EditBook() {
   const [author, setAuthor] = useState('');
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('');
+  const [image, setImage] = useState(null); // State untuk menyimpan gambar yang baru diunggah
+  const [existingImage, setExistingImage] = useState(''); // State untuk menyimpan URL gambar yang sudah ada
   const router = useRouter();
   const { id } = router.query;
 
@@ -29,6 +31,7 @@ export default function EditBook() {
         setAuthor(data.author);
         setPrice(data.price.toString());
         setStock(data.stock.toString());
+        setExistingImage(data.image); // Simpan URL gambar yang sudah ada
       } else {
         const error = await response.json();
         alert(error.message);
@@ -48,13 +51,25 @@ export default function EditBook() {
       return;
     }
 
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('author', author);
+    formData.append('price', price);
+    formData.append('stock', stock);
+    
+    // Jika image tidak berubah, tidak perlu mengirimkannya kembali
+    if (image) {
+      formData.append('image', image);
+    } else {
+      formData.append('image', existingImage);
+    }
+
     const response = await fetch(`/api/admin/books/${id}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ title, author, price: parseFloat(price), stock: parseInt(stock) })
+      body: formData,
     });
 
     if (response.ok) {
@@ -63,6 +78,12 @@ export default function EditBook() {
       const error = await response.json();
       alert(error.message);
     }
+  };
+
+  // Handle change event when selecting a new image
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
   };
 
   return (
@@ -107,6 +128,19 @@ export default function EditBook() {
             value={stock}
             onChange={(e) => setStock(e.target.value)}
             required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Image</label>
+          {existingImage && ( // Tampilkan gambar pratinjau jika ada URL gambar yang sudah ada
+            <div className="mb-3">
+              <img src={existingImage} alt="Existing Image" style={{ maxWidth: '200px', marginBottom: '10px' }} />
+            </div>
+          )}
+          <input
+            type="file"
+            className="form-control"
+            onChange={handleImageChange} // Gunakan handleImageChange untuk mengupdate state image
           />
         </div>
         <button type="submit" className="btn btn-primary">Update Book</button>

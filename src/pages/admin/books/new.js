@@ -6,10 +6,20 @@ export default function AddBook() {
   const [author, setAuthor] = useState('');
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('');
+  const [image, setImage] = useState(null);
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('author', author);
+    formData.append('price', price);
+    formData.append('stock', stock);
+    formData.append('image', image);
+    console.log('formData',formData);
+
     const token = localStorage.getItem('token');
     if (!token) {
       alert('No token found');
@@ -19,17 +29,17 @@ export default function AddBook() {
     const response = await fetch('/api/admin/books', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ title, author, price, stock })
+      body: formData,
     });
+
+    const result = await response.json();
 
     if (response.ok) {
       router.push('/admin/books');
     } else {
-      const error = await response.json();
-      alert(error.message);
+      alert(result.message);
     }
   };
 
@@ -75,6 +85,14 @@ export default function AddBook() {
             value={stock}
             onChange={(e) => setStock(e.target.value)}
             required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Image</label>
+          <input
+            type="file"
+            className="form-control"
+            onChange={(e) => setImage(e.target.files[0])}
           />
         </div>
         <button type="submit" className="btn btn-primary">Add Book</button>

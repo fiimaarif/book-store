@@ -1,7 +1,21 @@
 import { PrismaClient } from '@prisma/client';
+import multer from 'multer';
 import { verifyToken } from '../../../../middleware/auth';
 
 const prisma = new PrismaClient();
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: './public/uploads',
+    filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`),
+  }),
+});
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 export default async (req, res) => {
   const { method } = req;
@@ -27,12 +41,30 @@ export default async (req, res) => {
         res.status(200).json(book);
         break;
       case 'PUT':
-        const { title, author, price, stock } = req.body;
-        const updatedBook = await prisma.book.update({
-          where: { id: Number(id) },
-          data: { title, author, price, stock },
+        upload.single('image')(req, res, async (err) => {
+          if (err) {
+            console.error('Multer error:', err);
+            return res.status(500).json({ message: 'Error uploading image' });
+          }
+          const image = req.file ? `/uploads/${req.file.filename}` : req.body.image;
+          const { title, author, price, stock } = req.body;
+          let updatedBookData = { title,
+            author,
+            price: parseFloat(price),
+            stock: parseInt(stock, 10),
+            image };
+
+          if (req.file) {
+            updatedBookData.image = `/uploads/${req.file.filename}`;
+          }
+
+          const updatedBook = await prisma.book.update({
+            where: { id: Number(id) },
+            data: updatedBookData,
+          });
+
+          res.status(200).json(updatedBook);
         });
-        res.status(200).json(updatedBook);
         break;
       case 'DELETE':
         await prisma.book.delete({ where: { id: Number(id) } });

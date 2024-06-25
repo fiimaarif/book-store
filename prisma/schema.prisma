@@ -28,6 +28,7 @@ model Book {
   author String
   price  Float
   stock  Int
+  image  String?
   transactions TransactionDetail[]
 }
 
