@@ -2,6 +2,12 @@ import Image from "next/image";
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTruck, faList, faTags, faThumbsUp, faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons'
+import { Navigation, Pagination, Autoplay , A11y } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 
 function HomePage() {
     return (
@@ -9,7 +15,7 @@ function HomePage() {
             {/* Navbar */}
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className="container">
-                    <a className="navbar-brand" href="#">
+                    <a className="navbar-brand text-success fw-bold" href="#">
                         TUKUBUKU
                     </a>
                     <button
@@ -28,26 +34,6 @@ function HomePage() {
                         id="navbarSupportedContent"
                     >
                         <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">
-                                    KATALOG
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">
-                                    TERBARU
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">
-                                    REKOMENDASI
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">
-                                    DISKON
-                                </a>
-                            </li>
                         </ul>
                         <FontAwesomeIcon icon={faCartShopping} color="#2ED084" size="xl" className="me-4"/>
                         <FontAwesomeIcon icon={faUser} color="#2ED084" size="xl"/>
@@ -55,38 +41,50 @@ function HomePage() {
                 </div>
             </nav>
             {/* Hero */}
-            <div className="container py-5 d-flex align-items-center">
-                <div className="col-7">
-                    <h1>Welcome to TUKUBUKU!</h1>
-                    <h3>Discover Your Next Great Read</h3>
-                    <h5 className="my-3">
-                        Unleash Your Imagination with Our Curated Selection of
-                        Books
-                    </h5>
-                    <h6 className="my-3">
-                        Dive into a world of stories, knowledge, and adventure.
-                        Whether you're a passionate reader or a curious
-                        explorer, Book Haven offers a diverse collection of
-                        books to satisfy every literary appetite. From timeless
-                        classics to contemporary masterpieces, find your perfect
-                        book and embark on an unforgettable journey.
-                    </h6>
-                    <button className="btn btn-success me-4">
-                        Browse our collections
-                    </button>
-                    <button className="btn btn-primary">Sign up now</button>
+            <section className="container mh-50 py-5 gap-3 d-flex justify-content-between">
+                <div className="col-9">
+                <Swiper
+                     modules={[Navigation, Pagination, A11y, Autoplay]}
+                     spaceBetween={50}
+                     slidesPerView={1}
+                     navigation
+                     pagination={{ clickable: true }}
+                     onSwiper={(swiper) => console.log(swiper)}
+                     onSlideChange={() => console.log('slide change')}
+                     autoplay={{ delay: 3000, disableOnInteraction: false }}
+                     loop
+                    >
+                    <SwiperSlide><Image className="rounded" src="/images/slider-1.png" width={100} height={100} layout="responsive"/></SwiperSlide>
+                    <SwiperSlide><Image className="rounded" src="/images/slider-2.png" width={100} height={100} layout="responsive"/></SwiperSlide>
+                    <SwiperSlide><Image className="rounded" src="/images/slider-3.png" width={100} height={100} layout="responsive"/></SwiperSlide>
+                    </Swiper>
                 </div>
-                <div className="col-5">
+                <div className="col-3">
                     <Image
-                        src="/images/hero-image-new.png"
+                        className="rounded border border-2"
+                        src="/images/slider-4.png"
+                        width={100}
+                        height={100}
+                        layout="responsive"
+                    ></Image>
+                    <Image
+                        className="rounded border border-2"
+                        src="/images/slider-5.png"
+                        width={100}
+                        height={100}
+                        layout="responsive"
+                    ></Image>
+                    <Image
+                        className="rounded border border-2"
+                        src="/images/slider-6.png"
                         width={100}
                         height={100}
                         layout="responsive"
                     ></Image>
                 </div>
-            </div>
+            </section>
             {/* Point of Information */}
-            <div className="d-flex bg-white justify-content-around py-5">
+            <section className="d-flex bg-white justify-content-around py-5">
                 <div className="col-2 d-flex align-items-center">
                     <FontAwesomeIcon icon={faThumbsUp} color="#2ED084" size="2x" className="px-2" />
                     <h6>Rekomendasi pilihan sesuai selera Anda</h6>
@@ -103,7 +101,77 @@ function HomePage() {
                     <FontAwesomeIcon icon={faTruck} color="#2ED084" size="2x" className="px-2"/>
                     <h6>Pengiriman gratis untuk pesanan di atas Rp500.000</h6>
                 </div>
-            </div>
+            </section>
+            {/* New Book */}
+            <section className="container">
+                <h3 className="my-4">Terbaru</h3>
+                <div className="d-flex gap-4">
+                <div className="col-2 p-2 border rounded">
+                    <div>
+                        <Image src="/uploads/1719312867282-ratio.jpg" width={100} height={100} layout="responsive"/>
+                    </div>
+                    <div className="py-2">Author</div>
+                    <div className="">Title Book</div>
+                    <div className="pb-4">Rp.75000</div>
+                    <button className="btn btn-success w-100">Beli</button>
+                </div>
+                </div>
+            </section>
+            {/* Popular Book */}
+            <section className="container">
+                <h3 className="my-4">Terpopuler</h3>
+                <div className="d-flex gap-4">
+                <div className="col-2 p-2 border rounded">
+                    <div>
+                        <Image src="/uploads/1719312867282-ratio.jpg" width={100} height={100} layout="responsive"/>
+                    </div>
+                    <div className="py-2">Author</div>
+                    <div className="">Title Book</div>
+                    <div className="pb-4">Rp.75000</div>
+                    <button className="btn btn-success w-100">Beli</button>
+                </div>
+                </div>
+            </section>
+            {/* For you Book */}
+            <section className="container">
+                <h3 className="my-4">Rekomendasi untukmu</h3>
+                <div className="d-flex gap-4">
+                <div className="col-2 p-2 border rounded">
+                    <div>
+                        <Image src="/uploads/1719312867282-ratio.jpg" width={100} height={100} layout="responsive"/>
+                    </div>
+                    <div className="py-2">Author</div>
+                    <div className="">Title Book</div>
+                    <div className="pb-4">Rp.75000</div>
+                    <button className="btn btn-success w-100">Beli</button>
+                </div>
+                </div>
+            </section>
+            {/* Banner */}
+            <section className="my-5 py-5 bg-custom">
+                <div className="container d-flex align-items-center">
+                    <div className="col-6">
+                        <h1 className="text-light">Kejutan sepesial dari kami<br/> hanya untukmu</h1>
+                    </div>
+                    <div className="col-6">
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="email" placeholder="email address" aria-label="Search"/>
+                        <button class="btn btn-danger" type="submit">Subscribe</button>
+                    </form>
+                    </div>
+                </div>
+            </section>
+            {/* Footer */}
+            <footer class="py-3 my-4">
+                <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Home</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Features</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Pricing</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">FAQs</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">About</a></li>
+                </ul>
+                <p class="text-center text-body-secondary">&copy; 2024 <span className="fw-bold text-success">TUKUBUKU</span>, Inc</p>
+            </footer>
         </div>
     );
 }
