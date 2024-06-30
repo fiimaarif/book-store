@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
+import { formatCurrency } from '@/utils/constants';
 
 export default function ManageBooks() {
   const [books, setBooks] = useState([]);
@@ -55,7 +56,7 @@ export default function ManageBooks() {
                 <td>{book.id}</td>
                 <td>{book.title}</td>
                 <td>{book.author}</td>
-                <td>{book.price}</td>
+                <td>{formatCurrency(book.price)}</td>
                 <td>{book.stock}</td>
                 <td>
                   {book.image && (

@@ -1,15 +1,46 @@
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTruck, faList, faTags, faThumbsUp, faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons'
 import { Navigation, Pagination, Autoplay , A11y } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { formatCurrency } from "@/utils/constants";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 function HomePage() {
+
+  const [books, setBooks] = useState([]);
+  console.log('books', books);
+
+
+    useEffect(() => {
+        async function fetchBooks() {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            alert('No token found');
+            return;
+          }
+    
+          const response = await fetch('/api/admin/books', {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+    
+          if (response.ok) {
+            const data = await response.json();
+            setBooks(data);
+          } else {
+            const error = await response.json();
+            alert(error.message);
+          }
+        }
+        fetchBooks();
+      }, []);
+
     return (
         <div className="bg-light">
             {/* Navbar */}
@@ -33,30 +64,60 @@ function HomePage() {
                         className="collapse navbar-collapse"
                         id="navbarSupportedContent"
                     >
-                        <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
-                        </ul>
-                        <FontAwesomeIcon icon={faCartShopping} color="#2ED084" size="xl" className="me-4"/>
-                        <FontAwesomeIcon icon={faUser} color="#2ED084" size="xl"/>
+                        <ul className="navbar-nav mx-auto mb-2 mb-lg-0"></ul>
+                        <FontAwesomeIcon
+                            icon={faCartShopping}
+                            color="#2ED084"
+                            size="xl"
+                            className="me-4"
+                        />
+                        <FontAwesomeIcon
+                            icon={faUser}
+                            color="#2ED084"
+                            size="xl"
+                        />
                     </div>
                 </div>
             </nav>
             {/* Hero */}
             <section className="container mh-50 py-5 gap-md-3 gap-1 d-flex justify-content-between">
                 <div className="col-9">
-                <Swiper
-                     modules={[Navigation, Pagination, A11y, Autoplay]}
-                     spaceBetween={50}
-                     slidesPerView={1}
-                     navigation
-                     pagination={{ clickable: true }}
-                     onSwiper={(swiper) => console.log(swiper)}
-                     onSlideChange={() => console.log('slide change')}
-                     autoplay={{ delay: 3000, disableOnInteraction: false }}
-                     loop
+                    <Swiper
+                        modules={[Navigation, Pagination, A11y, Autoplay]}
+                        spaceBetween={50}
+                        slidesPerView={1}
+                        navigation
+                        pagination={{ clickable: true }}
+                        autoplay={{ delay: 3000, disableOnInteraction: false }}
+                        loop
                     >
-                    <SwiperSlide><Image className="rounded" src="/images/slider-1.png" width={100} height={100} layout="responsive"/></SwiperSlide>
-                    <SwiperSlide><Image className="rounded" src="/images/slider-2.png" width={100} height={100} layout="responsive"/></SwiperSlide>
-                    <SwiperSlide><Image className="rounded" src="/images/slider-3.png" width={100} height={100} layout="responsive"/></SwiperSlide>
+                        <SwiperSlide>
+                            <Image
+                                className="rounded"
+                                src="/images/slider-1.png"
+                                width={100}
+                                height={100}
+                                layout="responsive"
+                            />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Image
+                                className="rounded"
+                                src="/images/slider-2.png"
+                                width={100}
+                                height={100}
+                                layout="responsive"
+                            />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Image
+                                className="rounded"
+                                src="/images/slider-3.png"
+                                width={100}
+                                height={100}
+                                layout="responsive"
+                            />
+                        </SwiperSlide>
                     </Swiper>
                 </div>
                 <div className="col-3">
@@ -86,19 +147,39 @@ function HomePage() {
             {/* Point of Information */}
             <section className="d-flex p-2 p-md-5 flex-wrap bg-white justify-content-around">
                 <div className="col-md-2 col-6 d-flex align-items-center">
-                    <FontAwesomeIcon icon={faThumbsUp} color="#2ED084" size="2x" className="px-2" />
+                    <FontAwesomeIcon
+                        icon={faThumbsUp}
+                        color="#2ED084"
+                        size="2x"
+                        className="px-2"
+                    />
                     <h6>Rekomendasi pilihan sesuai selera Anda</h6>
                 </div>
                 <div className="col-md-2 col-6 d-flex align-items-center">
-                    <FontAwesomeIcon icon={faTags} color="#2ED084" size="2x" className="px-2" />
+                    <FontAwesomeIcon
+                        icon={faTags}
+                        color="#2ED084"
+                        size="2x"
+                        className="px-2"
+                    />
                     <h6>Diskon dan penawaran eksklusif</h6>
                 </div>
                 <div className="col-md-2 col-6 d-flex align-items-center">
-                    <FontAwesomeIcon icon={faList} color="#2ED084" size="2x" className="px-2"/>
+                    <FontAwesomeIcon
+                        icon={faList}
+                        color="#2ED084"
+                        size="2x"
+                        className="px-2"
+                    />
                     <h6>Daftar bacaan yang dipersonalisasi</h6>
                 </div>
                 <div className="col-md-2 col-6 d-flex align-items-center">
-                    <FontAwesomeIcon icon={faTruck} color="#2ED084" size="2x" className="px-2"/>
+                    <FontAwesomeIcon
+                        icon={faTruck}
+                        color="#2ED084"
+                        size="2x"
+                        className="px-2"
+                    />
                     <h6>Pengiriman gratis untuk pesanan di atas Rp500.000</h6>
                 </div>
             </section>
@@ -106,71 +187,131 @@ function HomePage() {
             <section className="container">
                 <h3 className="my-4">Terbaru</h3>
                 <div className="d-flex gap-4">
-                <div className="col-md-2 col-6 p-2 border rounded">
-                    <div>
-                        <Image src="/uploads/1719312867282-ratio.jpg" width={100} height={100} layout="responsive"/>
-                    </div>
-                    <div className="py-2">Author</div>
-                    <div className="">Title Book</div>
-                    <div className="pb-4">Rp.75000</div>
-                    <button className="btn btn-success w-100">Beli</button>
-                </div>
+                    {books.map(book => (
+                        <div key={book.id} className="col-md-3 col-6 p-2 border rounded">
+                            <div>
+                                <Image
+                                    src={book.image}
+                                    width={100}
+                                    height={100}
+                                    layout="responsive"
+                                />
+                            </div>
+                            <div className="py-2 text-muted">{book.author}</div>
+                            <div className="">{book.title}</div>
+                            <div className="pb-4 text-danger">{formatCurrency(book.price)}</div>
+                            <button className="btn btn-success w-100">
+                                Beli
+                            </button>
+                        </div>
+                    ))}
                 </div>
             </section>
             {/* Popular Book */}
             <section className="container">
                 <h3 className="my-4">Terpopuler</h3>
                 <div className="d-flex gap-4">
-                <div className="col-md-2 col-6 p-2 border rounded">
-                    <div>
-                        <Image src="/uploads/1719312867282-ratio.jpg" width={100} height={100} layout="responsive"/>
-                    </div>
-                    <div className="py-2">Author</div>
-                    <div className="">Title Book</div>
-                    <div className="pb-4">Rp.75000</div>
-                    <button className="btn btn-success w-100">Beli</button>
-                </div>
+                {books.map(book => (
+                        <div key={book.id} className="col-md-3 col-6 p-2 border rounded">
+                            <div>
+                                <Image
+                                    src={book.image}
+                                    width={100}
+                                    height={100}
+                                    layout="responsive"
+                                />
+                            </div>
+                            <div className="py-2 text-muted">{book.author}</div>
+                            <div className="">{book.title}</div>
+                            <div className="pb-4 text-danger">{formatCurrency(book.price)}</div>
+                            <button className="btn btn-success w-100">
+                                Beli
+                            </button>
+                        </div>
+                    ))}
                 </div>
             </section>
             {/* For you Book */}
             <section className="container">
                 <h3 className="my-4">Rekomendasi untukmu</h3>
                 <div className="d-flex gap-4">
-                <div className="col-md-2 col-6 p-2 border rounded">
-                    <div>
-                        <Image src="/uploads/1719312867282-ratio.jpg" width={100} height={100} layout="responsive"/>
-                    </div>
-                    <div className="py-2">Author</div>
-                    <div className="">Title Book</div>
-                    <div className="pb-4">Rp.75000</div>
-                    <button className="btn btn-success w-100">Beli</button>
-                </div>
+                {books.map(book => (
+                        <div key={book.id} className="col-md-3 col-6 p-2 border rounded">
+                            <div>
+                                <Image
+                                    src={book.image}
+                                    width={100}
+                                    height={100}
+                                    layout="responsive"
+                                />
+                            </div>
+                            <div className="py-2 text-muted">{book.author}</div>
+                            <div className="">{book.title}</div>
+                            <div className="pb-4 text-danger">{formatCurrency(book.price)}</div>
+                            <button className="btn btn-success w-100">
+                                Beli
+                            </button>
+                        </div>
+                    ))}
                 </div>
             </section>
             {/* Banner */}
             <section className="my-5 py-5 bg-custom">
                 <div className="container d-flex flex-wrap align-items-center">
                     <div className="col-md-6 col-12">
-                        <h1 className="text-light">Kejutan sepesial dari kami<br/> hanya untukmu</h1>
+                        <h1 className="text-light">
+                            Kejutan sepesial dari kami
+                            <br /> hanya untukmu
+                        </h1>
                     </div>
                     <div className="col-md-6 col-12">
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="email" placeholder="email address" aria-label="Search"/>
-                        <button class="btn btn-danger" type="submit">Subscribe</button>
-                    </form>
+                        <form class="d-flex" role="search">
+                            <input
+                                class="form-control me-2"
+                                type="email"
+                                placeholder="email address"
+                                aria-label="Search"
+                            />
+                            <button class="btn btn-danger" type="submit">
+                                Subscribe
+                            </button>
+                        </form>
                     </div>
                 </div>
             </section>
             {/* Footer */}
             <footer class="py-3 my-4">
                 <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Home</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Features</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Pricing</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">FAQs</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">About</a></li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link px-2 text-body-secondary">
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link px-2 text-body-secondary">
+                            Features
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link px-2 text-body-secondary">
+                            Pricing
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link px-2 text-body-secondary">
+                            FAQs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link px-2 text-body-secondary">
+                            About
+                        </a>
+                    </li>
                 </ul>
-                <p class="text-center text-body-secondary">&copy; 2024 <span className="fw-bold text-success">TUKUBUKU</span>, Inc</p>
+                <p class="text-center text-body-secondary">
+                    &copy; 2024{" "}
+                    <span className="fw-bold text-success">TUKUBUKU</span>, Inc
+                </p>
             </footer>
         </div>
     );
