@@ -33,7 +33,7 @@ export default function Register() {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 col-12 col-md-6">
       <h1>Register</h1>
       <form onSubmit={handleRegister}>
         <div className="mb-3">
