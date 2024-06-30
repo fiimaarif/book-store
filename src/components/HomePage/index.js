@@ -41,7 +41,7 @@ function HomePage() {
                 </div>
             </nav>
             {/* Hero */}
-            <section className="container mh-50 py-5 gap-3 d-flex justify-content-between">
+            <section className="container mh-50 py-5 gap-md-3 gap-1 d-flex justify-content-between">
                 <div className="col-9">
                 <Swiper
                      modules={[Navigation, Pagination, A11y, Autoplay]}
@@ -84,20 +84,20 @@ function HomePage() {
                 </div>
             </section>
             {/* Point of Information */}
-            <section className="d-flex bg-white justify-content-around py-5">
-                <div className="col-2 d-flex align-items-center">
+            <section className="d-flex p-2 p-md-5 flex-wrap bg-white justify-content-around">
+                <div className="col-md-2 col-6 d-flex align-items-center">
                     <FontAwesomeIcon icon={faThumbsUp} color="#2ED084" size="2x" className="px-2" />
                     <h6>Rekomendasi pilihan sesuai selera Anda</h6>
                 </div>
-                <div className="col-2 d-flex align-items-center">
+                <div className="col-md-2 col-6 d-flex align-items-center">
                     <FontAwesomeIcon icon={faTags} color="#2ED084" size="2x" className="px-2" />
                     <h6>Diskon dan penawaran eksklusif</h6>
                 </div>
-                <div className="col-2 d-flex align-items-center">
+                <div className="col-md-2 col-6 d-flex align-items-center">
                     <FontAwesomeIcon icon={faList} color="#2ED084" size="2x" className="px-2"/>
                     <h6>Daftar bacaan yang dipersonalisasi</h6>
                 </div>
-                <div className="col-2 d-flex align-items-center">
+                <div className="col-md-2 col-6 d-flex align-items-center">
                     <FontAwesomeIcon icon={faTruck} color="#2ED084" size="2x" className="px-2"/>
                     <h6>Pengiriman gratis untuk pesanan di atas Rp500.000</h6>
                 </div>
@@ -106,7 +106,7 @@ function HomePage() {
             <section className="container">
                 <h3 className="my-4">Terbaru</h3>
                 <div className="d-flex gap-4">
-                <div className="col-2 p-2 border rounded">
+                <div className="col-md-2 col-6 p-2 border rounded">
                     <div>
                         <Image src="/uploads/1719312867282-ratio.jpg" width={100} height={100} layout="responsive"/>
                     </div>
@@ -121,7 +121,7 @@ function HomePage() {
             <section className="container">
                 <h3 className="my-4">Terpopuler</h3>
                 <div className="d-flex gap-4">
-                <div className="col-2 p-2 border rounded">
+                <div className="col-md-2 col-6 p-2 border rounded">
                     <div>
                         <Image src="/uploads/1719312867282-ratio.jpg" width={100} height={100} layout="responsive"/>
                     </div>
@@ -136,7 +136,7 @@ function HomePage() {
             <section className="container">
                 <h3 className="my-4">Rekomendasi untukmu</h3>
                 <div className="d-flex gap-4">
-                <div className="col-2 p-2 border rounded">
+                <div className="col-md-2 col-6 p-2 border rounded">
                     <div>
                         <Image src="/uploads/1719312867282-ratio.jpg" width={100} height={100} layout="responsive"/>
                     </div>
@@ -149,11 +149,11 @@ function HomePage() {
             </section>
             {/* Banner */}
             <section className="my-5 py-5 bg-custom">
-                <div className="container d-flex align-items-center">
-                    <div className="col-6">
+                <div className="container d-flex flex-wrap align-items-center">
+                    <div className="col-md-6 col-12">
                         <h1 className="text-light">Kejutan sepesial dari kami<br/> hanya untukmu</h1>
                     </div>
-                    <div className="col-6">
+                    <div className="col-md-6 col-12">
                     <form class="d-flex" role="search">
                         <input class="form-control me-2" type="email" placeholder="email address" aria-label="Search"/>
                         <button class="btn btn-danger" type="submit">Subscribe</button>
