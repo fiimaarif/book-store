@@ -9,11 +9,15 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { addItemToCart } from "../../../redux/slices/cartSlice";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 
 function HomePage() {
 
   const [books, setBooks] = useState([]);
-  console.log('books', books);
+  const dispatch = useDispatch()
+  const router = useRouter()
 
 
   useEffect(() => {
@@ -34,6 +38,11 @@ function HomePage() {
 
     fetchBooks();
   }, []);
+
+  const handleBuy = (book) => {
+    dispatch(addItemToCart(book)); // Tambahkan buku ke keranjang
+    router.push('/cart'); // Navigasi ke halaman keranjang
+  };
 
     return (
         <div className="bg-light">
@@ -181,8 +190,11 @@ function HomePage() {
             <section className="container">
                 <h3 className="my-4">Terbaru</h3>
                 <div className="d-flex gap-4">
-                    {books.map(book => (
-                        <div key={book.id} className="col-md-3 col-6 p-2 border rounded">
+                    {books.map((book) => (
+                        <div
+                            key={book.id}
+                            className="col-md-2 col-6 p-2 border rounded"
+                        >
                             <div>
                                 <Image
                                     src={book.image}
@@ -191,10 +203,15 @@ function HomePage() {
                                     layout="responsive"
                                 />
                             </div>
-                            <div className="py-2 text-muted">{book.author}</div>
+                            <div className="pt-1 text-muted">{book.author}</div>
                             <div className="">{book.title}</div>
-                            <div className="pb-4 text-danger">{formatCurrency(book.price)}</div>
-                            <button className="btn btn-success w-100">
+                            <div className="pb-2 text-danger">
+                                {formatCurrency(book.price)}
+                            </div>
+                            <button
+                                onClick={() => handleBuy(book)}
+                                className="btn btn-success w-100"
+                            >
                                 Beli
                             </button>
                         </div>
@@ -205,8 +222,11 @@ function HomePage() {
             <section className="container">
                 <h3 className="my-4">Terpopuler</h3>
                 <div className="d-flex gap-4">
-                {books.map(book => (
-                        <div key={book.id} className="col-md-3 col-6 p-2 border rounded">
+                    {books.map((book) => (
+                        <div
+                            key={book.id}
+                            className="col-md-2 col-6 p-2 border rounded"
+                        >
                             <div>
                                 <Image
                                     src={book.image}
@@ -215,9 +235,11 @@ function HomePage() {
                                     layout="responsive"
                                 />
                             </div>
-                            <div className="py-2 text-muted">{book.author}</div>
+                            <div className="pt-1 text-muted">{book.author}</div>
                             <div className="">{book.title}</div>
-                            <div className="pb-4 text-danger">{formatCurrency(book.price)}</div>
+                            <div className="pb-2 text-danger">
+                                {formatCurrency(book.price)}
+                            </div>
                             <button className="btn btn-success w-100">
                                 Beli
                             </button>
@@ -229,8 +251,11 @@ function HomePage() {
             <section className="container">
                 <h3 className="my-4">Rekomendasi untukmu</h3>
                 <div className="d-flex gap-4">
-                {books.map(book => (
-                        <div key={book.id} className="col-md-3 col-6 p-2 border rounded">
+                    {books.map((book) => (
+                        <div
+                            key={book.id}
+                            className="col-md-2 col-6 p-2 border rounded"
+                        >
                             <div>
                                 <Image
                                     src={book.image}
@@ -239,9 +264,11 @@ function HomePage() {
                                     layout="responsive"
                                 />
                             </div>
-                            <div className="py-2 text-muted">{book.author}</div>
+                            <div className="pt-1 text-muted">{book.author}</div>
                             <div className="">{book.title}</div>
-                            <div className="pb-4 text-danger">{formatCurrency(book.price)}</div>
+                            <div className="pb-2 text-danger">
+                                {formatCurrency(book.price)}
+                            </div>
                             <button className="btn btn-success w-100">
                                 Beli
                             </button>

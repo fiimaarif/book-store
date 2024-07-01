@@ -23,13 +23,14 @@ model User {
 }
 
 model Book {
-  id     Int      @id @default(autoincrement())
-  title  String
-  author String
-  price  Float
-  stock  Int
-  image  String?
-  transactions TransactionDetail[]
+  id       Int      @id @default(autoincrement())
+  title    String
+  author   String
+  price    Float
+  stock    Int
+  image    String
+  orders   OrderItem[]
+  transactionDetails TransactionDetail[]
 }
 
 model Transaction {
@@ -52,4 +53,24 @@ model TransactionDetail {
   book          Book     @relation(fields: [bookId], references: [id])
   quantity      Int
   price         Float
+}
+
+model Order {
+  id              Int         @id @default(autoincrement())
+  customerName    String
+  customerEmail   String
+  customerAddress String
+  totalAmount     Float
+  createdAt       DateTime    @default(now())
+  items           OrderItem[]
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  bookId    Int
+  quantity  Int
+  totalPrice Float
+  order     Order   @relation(fields: [orderId], references: [id])
+  book      Book    @relation(fields: [bookId], references: [id])
 }
