@@ -16,30 +16,24 @@ function HomePage() {
   console.log('books', books);
 
 
-    useEffect(() => {
-        async function fetchBooks() {
-          const token = localStorage.getItem('token');
-          if (!token) {
-            alert('No token found');
-            return;
-          }
-    
-          const response = await fetch('/api/admin/books', {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          });
-    
-          if (response.ok) {
-            const data = await response.json();
-            setBooks(data);
-          } else {
-            const error = await response.json();
-            alert(error.message);
-          }
+  useEffect(() => {
+    async function fetchBooks() {
+      try {
+        const response = await fetch('/api/book');
+        if (response.ok) {
+          const data = await response.json();
+          setBooks(data);
+        } else {
+          const error = await response.json();
+          console.error('Error fetching books:', error.message);
         }
-        fetchBooks();
-      }, []);
+      } catch (error) {
+        console.error('Error fetching books:', error);
+      }
+    }
+
+    fetchBooks();
+  }, []);
 
     return (
         <div className="bg-light">
@@ -94,7 +88,7 @@ function HomePage() {
                         <SwiperSlide>
                             <Image
                                 className="rounded"
-                                src="/images/slider-1.png"
+                                src="/images/slider-1.1.jpg"
                                 width={100}
                                 height={100}
                                 layout="responsive"
@@ -103,7 +97,7 @@ function HomePage() {
                         <SwiperSlide>
                             <Image
                                 className="rounded"
-                                src="/images/slider-2.png"
+                                src="/images/slider-2.1.jpg"
                                 width={100}
                                 height={100}
                                 layout="responsive"
@@ -112,7 +106,7 @@ function HomePage() {
                         <SwiperSlide>
                             <Image
                                 className="rounded"
-                                src="/images/slider-3.png"
+                                src="/images/slider-3.1.jpg"
                                 width={100}
                                 height={100}
                                 layout="responsive"
@@ -123,21 +117,21 @@ function HomePage() {
                 <div className="col-3">
                     <Image
                         className="rounded border border-2"
-                        src="/images/slider-4.png"
+                        src="/images/slider-4.1.jpg"
                         width={100}
                         height={100}
                         layout="responsive"
                     ></Image>
                     <Image
                         className="rounded border border-2"
-                        src="/images/slider-5.png"
+                        src="/images/slider-5.1.jpg"
                         width={100}
                         height={100}
                         layout="responsive"
                     ></Image>
                     <Image
                         className="rounded border border-2"
-                        src="/images/slider-6.png"
+                        src="/images/slider-6.1.jpg"
                         width={100}
                         height={100}
                         layout="responsive"
