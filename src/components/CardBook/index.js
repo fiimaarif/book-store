@@ -1,9 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { formatCurrency } from "@/utils/constants";
 import Image from "next/image";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
+import { addItemToCart } from "../../../redux/slices/cartSlice";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function CardBook() {
     const [books, setBooks] = useState([]);
+    const router = useRouter();
+    const dispatch = useDispatch();
+
+    const handleBuy = (book) => {
+        dispatch(addItemToCart(book));
+        // router.push('/cart');
+        alert('berhasil ditambahkan ke keranjang')
+      };
+    
 
     useEffect(() => {
         async function fetchBooks() {
@@ -41,17 +55,27 @@ function CardBook() {
                                 layout="responsive"
                             />
                         </div>
-                        <div className="pt-1 text-muted">{book.author}</div>
+                        <small className="pt-1 text-muted">{book.author}</small>
                         <div className="">{book.title}</div>
                         <div className="pb-2 text-danger">
                             {formatCurrency(book.price)}
                         </div>
-                        <button
-                            onClick={() => handleBuy(book)}
-                            className="btn btn-success w-100"
-                        >
-                            Beli
-                        </button>
+                        <div className="d-flex justify-content-between align-items-center gap-2">
+                            <button
+                                onClick={() => handleBuy(book)}
+                                className="btn btn-success w-75"
+                            >
+                                Beli
+                            </button>
+                            <div>
+                            <FontAwesomeIcon
+                                icon={faCartShopping}
+                                color="#dc3545"
+                                size="xl"
+                                onClick={() => handleBuy(book)}
+                            />
+                            </div>
+                        </div>
                     </div>
                 ))}
             </div>

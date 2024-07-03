@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Modal, Button, ListGroup, CloseButton } from 'react-bootstrap';
-import { addItemToCart } from "../../../redux/slices/cartSlice";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faCartShopping, faUser, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { formatCurrency } from "@/utils/constants";
+import { removeItemFromCart } from "../../../redux/slices/cartSlice";
 
 function Navbar() {
-    const handleBuy = (book) => {
-        dispatch(addItemToCart(book)); // Tambahkan buku ke keranjang
-        router.push('/cart'); // Navigasi ke halaman keranjang
-      };
     
     const [showModal, setShowModal] = useState(false);
     const dispatch = useDispatch()
@@ -18,6 +15,17 @@ function Navbar() {
     
     const handleShow = () => setShowModal(true);
     const handleClose = () => setShowModal(false);
+
+    const cartItems = useSelector((state) => state.cart.items);
+    const totalAmount = useSelector((state) => state.cart.totalAmount);
+
+    const handleRemoveItem = (id) => {
+        dispatch(removeItemFromCart(id));
+    };
+
+    const handleCheckout = () => {
+        router.push("/checkout");
+    };
     
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -58,80 +66,52 @@ function Navbar() {
                 </Modal.Header>
                 <Modal.Body>
                     <ListGroup>
-                        <ListGroup.Item>
-                            <div className="d-flex w-100 justify-content-between">
-                                <img
-                                    src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg"
-                                    thumbnail
-                                    alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
-                                    style={{ width: "6rem" }}
-                                />
-                                <div className="ms-3">
-                                    <h5 className="mb-1">Throwback Hip Bag</h5>
-                                    <small className="text-muted">Salmon</small>
-                                    <div className="d-flex justify-content-between align-items-end">
-                                        <p className="mb-1">$90.00</p>
+                        {cartItems.map((item) => (
+                            <ListGroup.Item key={item.id}>
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <img
+                                            src={item.image}
+                                            thumbnail
+                                            alt="cart-image"
+                                            style={{ width: "6rem" }}
+                                        />
+                                    </div>
+                                    <div className="ms-1">
+                                        <h5 className="mb-1">{item.title}</h5>
                                         <small className="text-muted">
-                                            Qty 1
+                                            {item.author}
                                         </small>
-                                        <Button
-                                            variant="link"
-                                            className="text-primary p-0"
-                                        >
-                                            Remove
-                                        </Button>
+                                        <div className="">
+                                            <p className="mb-1">
+                                                {formatCurrency(item.price)} X{" "}
+                                                {item.quantity}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <FontAwesomeIcon
+                                            icon={faTrashAlt}
+                                            color="#dc3545"
+                                            size="2xl"
+                                            onClick={() =>
+                                                handleRemoveItem(item.id)
+                                            }
+                                        />
                                     </div>
                                 </div>
-                            </div>
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            <div className="d-flex w-100 justify-content-between">
-                                <img
-                                    src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg"
-                                    thumbnail
-                                    alt="Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch."
-                                    style={{ width: "6rem" }}
-                                />
-                                <div className="ms-3">
-                                    <h5 className="mb-1">
-                                        Medium Stuff Satchel
-                                    </h5>
-                                    <small className="text-muted">Blue</small>
-                                    <div className="d-flex justify-content-between align-items-end">
-                                        <p className="mb-1">$32.00</p>
-                                        <small className="text-muted">
-                                            Qty 1
-                                        </small>
-                                        <Button
-                                            variant="link"
-                                            className="text-primary p-0"
-                                        >
-                                            Remove
-                                        </Button>
-                                    </div>
-                                </div>
-                            </div>
-                        </ListGroup.Item>
-                        {/* More products... */}
+                            </ListGroup.Item>
+                        ))}
                     </ListGroup>
                 </Modal.Body>
                 <Modal.Footer className="d-block text-center">
                     <div className="d-flex justify-content-between">
                         <p className="mb-0">Subtotal</p>
-                        <p className="mb-0">$262.00</p>
+                        <p className="mb-0">{formatCurrency(totalAmount)}</p>
                     </div>
-                    <small className="text-muted">
-                        Shipping and taxes calculated at checkout.
-                    </small>
                     <div className="mt-3">
-                        <Button onClick={handleBuy} variant="primary" className="w-100">
+                        <Button variant="primary" className="w-100">
                             Checkout
-                        </Button>
-                    </div>
-                    <div className="mt-3">
-                        <p className="mb-0">or</p>
-                        <Button variant="link" className="text-primary">
-                            Continue Shopping &rarr;
                         </Button>
                     </div>
                 </Modal.Footer>
