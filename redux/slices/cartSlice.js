@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import Swal from 'sweetalert2';
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -25,6 +26,11 @@ const cartSlice = createSlice({
         existingItem.totalPrice += newItem.price;
       }
       state.totalAmount += newItem.price;
+      Swal.fire({
+        title: 'Success',
+        text: 'Berhasil ditambahkan ke keranjang',
+        icon: 'success',
+      })
     },
     removeItemFromCart(state, action) {
       const id = action.payload;

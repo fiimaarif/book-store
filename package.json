@@ -27,6 +27,7 @@
     "react-redux": "^9.1.2",
     "react-responsive": "^10.0.0",
     "redux": "^5.0.1",
+    "sweetalert2": "^11.12.1",
     "swiper": "^11.1.4"
   },
   "devDependencies": {

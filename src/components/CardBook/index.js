@@ -2,21 +2,17 @@ import React, { useEffect, useState } from "react";
 import { formatCurrency } from "@/utils/constants";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
-import { useRouter } from "next/router";
 import { addItemToCart } from "../../../redux/slices/cartSlice";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function CardBook() {
     const [books, setBooks] = useState([]);
-    const router = useRouter();
     const dispatch = useDispatch();
 
     const handleBuy = (book) => {
         dispatch(addItemToCart(book));
-        // router.push('/cart');
-        alert('berhasil ditambahkan ke keranjang')
-      };
+    };
     
 
     useEffect(() => {

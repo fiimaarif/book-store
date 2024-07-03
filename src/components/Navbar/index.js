@@ -66,7 +66,7 @@ function Navbar() {
                 </Modal.Header>
                 <Modal.Body>
                     <ListGroup>
-                        {cartItems.map((item) => (
+                        {cartItems.length > 0 ? cartItems.map((item) => (
                             <ListGroup.Item key={item.id}>
                                 <div className="d-flex justify-content-between align-items-center">
                                     <div>
@@ -101,7 +101,7 @@ function Navbar() {
                                     </div>
                                 </div>
                             </ListGroup.Item>
-                        ))}
+                        )) : <span className="text-center text-danger">Belum ada Item</span>}
                     </ListGroup>
                 </Modal.Body>
                 <Modal.Footer className="d-block text-center">
