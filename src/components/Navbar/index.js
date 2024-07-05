@@ -110,7 +110,7 @@ function Navbar() {
                         <p className="mb-0">{formatCurrency(totalAmount)}</p>
                     </div>
                     <div className="mt-3">
-                        <Button variant="primary" className="w-100">
+                        <Button variant="primary" className="w-100" onClick={handleCheckout}>
                             Checkout
                         </Button>
                     </div>

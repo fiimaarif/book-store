@@ -5,15 +5,16 @@ import { useDispatch } from "react-redux";
 import { addItemToCart } from "../../../redux/slices/cartSlice";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/router";
 
 function CardBook() {
     const [books, setBooks] = useState([]);
     const dispatch = useDispatch();
+    const routes = useRouter()
 
-    const handleBuy = (book) => {
+    const handleCart = (book) => {
         dispatch(addItemToCart(book));
     };
-    
 
     useEffect(() => {
         async function fetchBooks() {
@@ -58,8 +59,8 @@ function CardBook() {
                         </div>
                         <div className="d-flex justify-content-between align-items-center gap-2">
                             <button
-                                onClick={() => handleBuy(book)}
                                 className="btn btn-success w-75"
+                                onClick={() => routes.push("/checkout")}
                             >
                                 Beli
                             </button>
@@ -68,7 +69,7 @@ function CardBook() {
                                 icon={faCartShopping}
                                 color="#dc3545"
                                 size="xl"
-                                onClick={() => handleBuy(book)}
+                                onClick={() => handleCart(book)}
                             />
                             </div>
                         </div>
