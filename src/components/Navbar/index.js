@@ -30,7 +30,7 @@ function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container">
-                <a className="navbar-brand text-success fw-bold" href="#">
+                <a className="navbar-brand text-success fw-bold" style={{cursor: "pointer"}} onClick={() => router.push("/")}>
                     TUKUBUKU
                 </a>
                 <button
@@ -55,8 +55,9 @@ function Navbar() {
                         size="xl"
                         className="me-4"
                         onClick={handleShow}
+                        style={{cursor: "pointer"}}
                     />
-                    <FontAwesomeIcon icon={faUser} color="#2ED084" size="xl" />
+                    <FontAwesomeIcon icon={faUser} color="#2ED084" size="xl" style={{cursor: "pointer"}}/>
                 </div>
             </div>
             <Modal show={showModal} onHide={handleClose} scrollable>
@@ -110,7 +111,7 @@ function Navbar() {
                         <p className="mb-0">{formatCurrency(totalAmount)}</p>
                     </div>
                     <div className="mt-3">
-                        <Button variant="primary" className="w-100" onClick={handleCheckout}>
+                        <Button variant="primary" disabled={!cartItems.length > 0} className="w-100" onClick={handleCheckout}>
                             Checkout
                         </Button>
                     </div>

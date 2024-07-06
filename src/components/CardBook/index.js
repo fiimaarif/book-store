@@ -70,6 +70,7 @@ function CardBook() {
                                 color="#dc3545"
                                 size="xl"
                                 onClick={() => handleCart(book)}
+                                style={{cursor: "pointer"}}
                             />
                             </div>
                         </div>

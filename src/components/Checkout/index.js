@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Navbar from "../Navbar";
 import { formatCurrency } from "@/utils/constants";
-import { Modal, Button, ListGroup, CloseButton } from 'react-bootstrap';
 import Footer from "../Footer";
 
 export default function Checkout() {
@@ -15,10 +14,6 @@ export default function Checkout() {
     const [email, setEmail] = useState("");
     const [kodePos, setKodePos] = useState("");
     const [alamatLengkap, setAlamatLengkap] = useState("");
-
-    const [showModal, setShowModal] = useState(false);
-    const handleShow = () => setShowModal(true);
-    const handleClose = () => setShowModal(false);    
 
     const handlePayment = async () => {
         // Kirim pesanan ke server untuk diproses
@@ -257,23 +252,13 @@ export default function Checkout() {
                         </div>
                         <button
                             className="w-100 mt-3 rounded-pill btn btn-danger fs-5"
-                            onClick={handleShow}
+                            onClick={() => router.push("/payment")}
                         >
                             Bayar
                         </button>
                     </div>
                 </div>
             </div>
-            <Modal show={showModal} onHide={handleClose} scrollable>
-                <Modal.Header>
-                    <Modal.Title>Shopping cart</Modal.Title>
-                    <CloseButton onClick={handleClose} />
-                </Modal.Header>
-                <Modal.Body>
-                    <div>BAYAR WOIII</div>
-                </Modal.Body>
-                <Modal.Footer className="d-block text-center"></Modal.Footer>
-            </Modal>
             <Footer />
         </>
     );
