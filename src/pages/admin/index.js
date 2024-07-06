@@ -1,10 +1,11 @@
+import withAuth from '@/components/Auth/withAuth';
 import Layout from '@/components/Layout';
 import Sidebar from '@/components/Sidebar';
 import { logout } from '@/utils/auth';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-export default function AdminDashboard() {
+function Admin() {
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
@@ -33,3 +34,5 @@ export default function AdminDashboard() {
       </Layout>
   );
 }
+
+export default withAuth(Admin)

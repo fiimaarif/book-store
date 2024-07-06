@@ -6,6 +6,8 @@ import { addItemToCart } from "../../../redux/slices/cartSlice";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
+import { ShoppingCart } from 'react-feather';
+
 
 function CardBook() {
     const [books, setBooks] = useState([]);
@@ -65,12 +67,10 @@ function CardBook() {
                                 Beli
                             </button>
                             <div>
-                            <FontAwesomeIcon
-                                icon={faCartShopping}
-                                color="#dc3545"
-                                size="xl"
-                                onClick={() => handleCart(book)}
-                                style={{cursor: "pointer"}}
+                            <ShoppingCart
+                            className="text-danger"
+                            onClick={() => handleCart(book)}
+                            style={{cursor: "pointer"}}
                             />
                             </div>
                         </div>

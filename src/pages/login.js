@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Swal from 'sweetalert2';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -22,10 +23,19 @@ export default function Login() {
       if (payload.role === 'admin') {
         router.push('/admin/dashboard');
       } else {
-        router.push('/user/dashboard');
+        Swal.fire({
+          title: 'Success',
+          text: response.message,
+          icon: 'success',
+        })
+        router.push('/');
       }
     } else {
-      alert(data.error);
+      Swal.fire({
+        title: 'Gagal',
+        text: "Email atau Password Salah",
+        icon: 'error',
+      })
     }
   };
 

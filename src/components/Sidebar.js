@@ -7,24 +7,24 @@ export default function Sidebar() {
           <div className="sidebar-sticky">
             <ul className="nav flex-column">
               <li className="nav-item">
-                <Link href="/admin/dashboard" className="text-decoration-none text-light">
+                <Link to="/admin/dashboard" className="text-decoration-none text-light">
                   <div className="nav-link text-light">
                     Dashboard
                   </div>
                 </Link>
               </li>
               <li className="nav-item">
-                <Link href="/admin/books" className="text-decoration-none text-light">
+                <Link to="/admin/books" className="text-decoration-none text-light">
                   <div className="nav-link text-light">Books</div>
                 </Link>
               </li>
               <li className="nav-item">
-                <Link href="/admin/users" className="text-decoration-none text-light">
+                <Link to="/admin/users" className="text-decoration-none text-light">
                   <div className="nav-link text-light">Users</div>
                 </Link>
               </li>
               <li className="nav-item">
-                <Link href="/admin/transactions" className="text-decoration-none text-light">
+                <Link to="/admin/transactions" className="text-decoration-none text-light">
                   <div className="nav-link text-light">Transactions</div>
                 </Link>
               </li>

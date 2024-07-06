@@ -35,7 +35,7 @@ export default function ManageBooks() {
     <Layout>
       <div className="container mt-5">
         <h1>Manage Books</h1>
-        <Link href="/admin/books/new">
+        <Link to="/admin/books/new">
           <div className="btn btn-primary mb-3">Add New Book</div>
         </Link>
         <table className="table">
@@ -64,7 +64,7 @@ export default function ManageBooks() {
                   )}
                 </td>
                 <td>
-                  <Link href={`/admin/books/edit/${book.id}`}>
+                  <Link to={`/admin/books/edit/${book.id}`}>
                     <div className="btn btn-secondary btn-sm">Edit</div>
                   </Link>
                   <button
