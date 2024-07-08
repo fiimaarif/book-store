@@ -1,4 +1,4 @@
-import withAuth from '@/components/Auth/withAuth';
+// import withAuth from '@/components/Auth/withAuth';
 import Layout from '@/components/Layout';
 import Sidebar from '@/components/Sidebar';
 import { logout } from '@/utils/auth';
@@ -35,4 +35,4 @@ function Admin() {
   );
 }
 
-export default withAuth(Admin)
+export default Admin

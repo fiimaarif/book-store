@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import Footer from "../Footer";
 import Navbar from "../Navbar";
 import { formatDateTime } from "@/utils/constants";
+import { useRouter } from "next/router";
 
 function Payment() {
+    const router = useRouter()
     const [timeLeft, setTimeLeft] = useState(24 * 60 * 60 * 1000);
     const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -61,6 +63,7 @@ function Payment() {
                         <div>Unpaid</div>
                     </div>
                 </div>
+                <button className="w-100 rounded btn btn-success mt-3" onClick={()=> router.push("/")}>Konfirmasi Bayar</button>
             </div>
             <Footer />
         </div>

@@ -3,95 +3,104 @@ import Link from 'next/link';
 import Layout from '@/components/Layout';
 
 export default function Transaction() {
-  const [books, setBooks] = useState([]);
+  const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchBooks() {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        alert('No token found');
-        return;
-      }
+    useEffect(() => {
+        fetchOrders();
+    }, []);
 
-      const response = await fetch('/api/admin/books', {
-        headers: {
-          'Authorization': `Bearer ${token}`
+    const fetchOrders = async () => {
+        try {
+            const response = await fetch("/api/orders");
+            const data = await response.json();
+            setOrders(data);
+            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching orders:", error);
+            setLoading(false);
         }
-      });
+    };
 
-      if (response.ok) {
-        const data = await response.json();
-        setBooks(data);
-      } else {
-        const error = await response.json();
-        alert(error.message);
-      }
+    const updateOrderStatus = async (orderId, newStatus) => {
+        try {
+            const response = await fetch(`/api/orders/${orderId}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ status: newStatus }),
+            });
+
+            if (response.ok) {
+                fetchOrders();
+            } else {
+                const error = await response.json();
+                alert(error.message);
+            }
+        } catch (error) {
+            console.error("Error updating order status:", error);
+        }
+    };
+
+    if (loading) {
+        return <div>Loading...</div>;
     }
-    fetchBooks();
-  }, []);
+
 
   return (
-    <Layout>
-      <div className="container mt-5">
-      <h1>Manage Transaction</h1>
-      <Link to="/admin/books/new">
-        <div className="btn btn-primary mb-3">Add New Book</div>
-      </Link>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {books.map(book => (
-            <tr key={book.id}>
-              <td>{book.id}</td>
-              <td>{book.title}</td>
-              <td>{book.author}</td>
-              <td>{book.price}</td>
-              <td>{book.stock}</td>
-              <td>
-                <Link to={`/admin/books/edit/${book.id}`}>
-                  <div className="btn btn-secondary btn-sm">Edit</div>
-                </Link>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={async () => {
-                    const token = localStorage.getItem('token');
-                    if (!token) {
-                      alert('No token found');
-                      return;
-                    }
-
-                    const response = await fetch(`/api/admin/books/${book.id}`, {
-                      method: 'DELETE',
-                      headers: {
-                        'Authorization': `Bearer ${token}`
-                      }
-                    });
-
-                    if (response.ok) {
-                      setBooks(books.filter(b => b.id !== book.id));
-                    } else {
-                      const error = await response.json();
-                      alert(error.message);
-                    }
-                  }}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-    </Layout>
+      <Layout>
+          <div className="container mt-5">
+              <h1>Manage Transaction</h1>
+              <table className="table">
+                  <thead>
+                      <tr>
+                          <th>Order ID</th>
+                          <th>Customer Name</th>
+                          <th>Items</th>
+                          <th>Total Amount</th>
+                          <th>Status</th>
+                          <th>Actions</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {orders.map((order) => (
+                          <tr key={order.id}>
+                              <td>{order.id}</td>
+                              <td>{order.customerName}</td>
+                              <td>
+                                  {order.items.map((item) => (
+                                      <div key={item.id}>
+                                          {item.quantity}x {item.bookId} -{" "}
+                                          {item.totalPrice}
+                                      </div>
+                                  ))}
+                              </td>
+                              <td>{order.totalAmount}</td>
+                              <td>{order.status}</td>
+                              <td>
+                                  <select
+                                      value={order.status}
+                                      onChange={(e) => updateOrderStatus(order.id, e.target.value)}
+                                      className='form-select'
+                                  >
+                                      <option value="PENDING">Pending</option>
+                                      <option value="PROCESSING">
+                                          Processing
+                                      </option>
+                                      <option value="COMPLETED">
+                                          Completed
+                                      </option>
+                                      <option value="CANCELLED">
+                                          Cancelled
+                                      </option>
+                                  </select>
+                              </td>
+                          </tr>
+                      ))}
+                  </tbody>
+              </table>
+          </div>
+      </Layout>
   );
 }

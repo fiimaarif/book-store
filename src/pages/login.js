@@ -21,7 +21,7 @@ export default function Login() {
       localStorage.setItem('token', data.token);
       const payload = JSON.parse(atob(data.token.split('.')[1]));
       if (payload.role === 'admin') {
-        router.push('/admin/dashboard');
+        router.push('/admin');
       } else {
         Swal.fire({
           title: 'Success',

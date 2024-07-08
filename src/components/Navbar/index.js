@@ -111,7 +111,7 @@ function NavbarComponent() {
                                 </div>
                             </Modal.Footer>
                         </Modal>
-                        <Dropdown as="li" className="ms-2">
+                        <Dropdown className="ms-2">
                             <Dropdown.Toggle
                                 as="a"
                                 bsPrefix=" "
@@ -126,25 +126,25 @@ function NavbarComponent() {
                                 show
                             >
                                 <Dropdown.Item>
-                                    <Link className="text-decoration-none text-dark" href="/user/dashboard">
-                                    <User size={18} className="me-1 mb-1"/>Profile</Link>
+                                    <div className="text-decoration-none text-dark" onClick={() => router.push("/user")}>
+                                    <User size={18} className="me-1 mb-1"/>Profile</div>
                                 </Dropdown.Item>
                                     <div className=" dropdown-divider my-2"></div>
                                 <Dropdown.Item>
                                 {isLoggedIn ? (
-                                    <Link
+                                    <div
                                     className="text-decoration-none text-dark"
                                     onClick={logout}
                                     href="/"
                                     >
                                     <Power size={18} className="me-1" />
                                     Log Out
-                                    </Link>
+                                    </div>
                                 ) : (
-                                    <Link className="text-decoration-none text-dark" href="/login">
+                                    <div className="text-decoration-none text-dark" onClick={() => router.push("/login")}>
                                     <Power size={18} className="me-1" />
                                     Log In
-                                    </Link>
+                                    </div>
                                 )}
                                 </Dropdown.Item>
                             </Dropdown.Menu>

@@ -14,25 +14,30 @@ export default function Checkout() {
     const [email, setEmail] = useState("");
     const [kodePos, setKodePos] = useState("");
     const [alamatLengkap, setAlamatLengkap] = useState("");
+    const [bank, setBank] = useState("");
 
-    const handlePayment = async () => {
-        // Kirim pesanan ke server untuk diproses
+    const handlePayment = async (e) => {
+        e.preventDefault();
+
         const response = await fetch("/api/checkout", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                customerName,
-                customerEmail,
-                customerAddress,
+                customerName: namaPenerima,
+                customerEmail: email,
+                customerAddress: alamatLengkap,
+                customerPhone: nomorTelepon,
+                postalCode: kodePos,
+                bank,
                 items: cartItems,
                 totalAmount,
             }),
         });
 
         if (response.ok) {
-            router.push("/confirmation");
+            router.push("/payment");
         } else {
             const error = await response.json();
             alert(error.message);
@@ -44,12 +49,12 @@ export default function Checkout() {
             <Navbar />
             <div className="container my-3">
                 <h2 className="mt-3">Checkout</h2>
-                <div className="d-flex gap-2">
-                    <div class="mt-3 col-12 col-md-6 col-lg-7">
-                        <div className="card p-2 shadow">
-                            <h5>Detail Penerima</h5>
-                            <hr />
-                            <form onSubmit={handlePayment}>
+                <form onSubmit={handlePayment}>
+                    <div className="d-flex gap-2">
+                        <div className="mt-3 col-12 col-md-6 col-lg-7">
+                            <div className="card p-2 shadow">
+                                <h5>Detail Penerima</h5>
+                                <hr />
                                 <div className="mb-3 d-flex gap-1">
                                     <div className="col-12 col-md-6 col-lg-6">
                                         <label
@@ -149,115 +154,130 @@ export default function Checkout() {
                                         required
                                     ></textarea>
                                 </div>
-                                <button
-                                    type="submit"
-                                    className="btn btn-primary"
-                                >
-                                    Submit
-                                </button>
-                            </form>
-                        </div>
-                        <hr />
-                        <div class="mt-2 card p-2 shadow">
-                            <h5>Detail Pesanan</h5>
-                            <hr />
-                            {cartItems.map((item) => (
-                                <div className="border rounded my-1 p-1">
-                                    <div
-                                        key={item.id}
-                                        className="d-flex align-items-center"
+                                <div className="mb-3">
+                                    <label
+                                        htmlFor="namaBank"
+                                        className="form-label"
                                     >
-                                        <img
-                                            style={{ height: 100 }}
-                                            src={item.image}
-                                        />
-                                        <div className="ms-3">
-                                            <small className="text-muted">
-                                                {item.author}
-                                            </small>
-                                            <div>{item.title}</div>
-                                            <div>
-                                                Quantity : {item.quantity}
+                                        Nama Bank dan Nomor Rekening
+                                    </label>
+                                    <select
+                                        className="form-select"
+                                        id="namaBank"
+                                        value={bank}
+                                        onChange={(e) =>
+                                            setBank(e.target.value)
+                                        }
+                                        required
+                                    >
+                                        <option value="">
+                                            Pilih Bank dan Nomor Rekening
+                                        </option>
+                                        <option value="BCA">
+                                            BCA - 1234567890
+                                        </option>
+                                        <option value="Mandiri">
+                                            Mandiri - 0987654321
+                                        </option>
+                                        <option value="BNI">
+                                            BNI - 1122334455
+                                        </option>
+                                        <option value="BRI">
+                                            BRI - 5566778899
+                                        </option>
+                                        <option value="CIMB">
+                                            CIMB - 6677889900
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <hr />
+                            <div className="mt-2 card p-2 shadow">
+                                <h5>Detail Pesanan</h5>
+                                <hr />
+                                {cartItems.map((item) => (
+                                    <div
+                                        className="border rounded my-1 p-1"
+                                        key={item.id}
+                                    >
+                                        <div className="d-flex align-items-center">
+                                            <img
+                                                style={{ height: 100 }}
+                                                src={item.image}
+                                                alt={item.title}
+                                            />
+                                            <div className="ms-3">
+                                                <small className="text-muted">
+                                                    {item.author}
+                                                </small>
+                                                <div>{item.title}</div>
+                                                <div>
+                                                    Quantity : {item.quantity}
+                                                </div>
                                             </div>
+                                            <p className="fw-bold ms-auto text-primary">
+                                                {formatCurrency(item.price)}
+                                            </p>
                                         </div>
-                                        <p className="fw-bold ms-auto text-primary">
-                                            {formatCurrency(item.price)}
-                                        </p>
                                     </div>
+                                ))}
+                                <hr />
+                                <div className="d-flex justify-content-between">
+                                    <h5 className="text-success">
+                                        Total Pesanan
+                                    </h5>
+                                    <h5 className="text-primary">
+                                        {formatCurrency(totalAmount)}
+                                    </h5>
                                 </div>
-                            ))}
-                            <hr />
-                            <div className="d-flex justify-content-between">
-                                <h5 className="text-success">Total Pesanan</h5>
-                                <h5 className="text-primary">
-                                    {formatCurrency(totalAmount)}
-                                </h5>
                             </div>
+                        </div>
+                        <div className="mt-3 col-12 col-md-6 col-lg-5">
+                            <div className="card p-2 shadow">
+                                <h5>Pilih Metode Pembayaran</h5>
+                                <hr />
+                                <p className="fw-bold">Ringkasan Pembayaran</p>
+                                <div className="d-flex justify-content-between">
+                                    <div className="py-1">Total Harga</div>
+                                    <div>Rp 10.000,00</div>
+                                </div>
+                                <div className="d-flex justify-content-between">
+                                    <div className="py-1">
+                                        Total Biaya Pengiriman
+                                    </div>
+                                    <div>Rp 10.000,00</div>
+                                </div>
+                                <div className="d-flex justify-content-between">
+                                    <div className="py-1">Biaya Asuransi</div>
+                                    <div>Rp 10.000,00</div>
+                                </div>
+                                <div className="d-flex justify-content-between">
+                                    <div className="py-1">Diskon Belanja</div>
+                                    <div>Rp 10.000,00</div>
+                                </div>
+                                <div className="d-flex justify-content-between">
+                                    <div className="py-1">
+                                        Diskon Pengiriman
+                                    </div>
+                                    <div>Rp 10.000,00</div>
+                                </div>
+                                <hr />
+                                <div className="d-flex justify-content-between">
+                                    <p className="fw-bold">Total Dibayar</p>
+                                    <p className="fw-bold text-primary">
+                                        Rp 100.000,00
+                                    </p>
+                                </div>
+                            </div>
+                            <button
+                                type="submit"
+                                className="w-100 mt-3 rounded-pill btn btn-danger fs-5"
+                            >
+                                Bayar
+                            </button>
                         </div>
                     </div>
-                    <div className="mt-3 col-12 col-md-6 col-lg-5">
-                        <div class="card p-2 shadow">
-                            <h5>Pilih Metode Pembayaran</h5>
-                            <hr />
-                            <label for="namaBank" class="form-label">
-                                Nama Bank dan Nomor Rekening
-                            </label>
-                            <select class="form-select" id="namaBank" required>
-                                <option value="">
-                                    Pilih Bank dan Nomor Rekening
-                                </option>
-                                <option value="BCA">BCA - 1234567890</option>
-                                <option value="Mandiri">
-                                    Mandiri - 0987654321
-                                </option>
-                                <option value="BNI">BNI - 1122334455</option>
-                                <option value="BRI">BRI - 5566778899</option>
-                                <option value="CIMB">CIMB - 6677889900</option>
-                            </select>
-                        </div>
-                        <hr />
-                        <div class="mt-2 card p-2 shadow">
-                            <h5>Rincian Belanja</h5>
-                            <hr />
-                            <p className="fw-bold">Ringkasan Pembayaran</p>
-                            <div className="d-flex justify-content-between">
-                                <div className="py-1">Total Harga</div>
-                                <div>Rp 10.000,00</div>
-                            </div>
-                            <div className="d-flex justify-content-between">
-                                <div className="py-1">
-                                    Total Biaya Pengiriman
-                                </div>
-                                <di>Rp 10.000,00</di>
-                            </div>
-                            <div className="d-flex justify-content-between">
-                                <div className="py-1">Biaya Asuransi</div>
-                                <div>Rp 10.000,00</div>
-                            </div>
-                            <div className="d-flex justify-content-between">
-                                <div className="py-1">Diskon Belanja</div>
-                                <div>Rp 10.000,00</div>
-                            </div>
-                            <div className="d-flex justify-content-between">
-                                <div className="py-1">Diskon Pengiriman</div>
-                                <div>Rp 10.000,00</div>
-                            </div>
-                            <hr />
-                            <div className="d-flex justify-content-between">
-                                <p className="fw-bold">Total Dibayar</p>
-                                <p className="fw-bold text-primary">
-                                    Rp 100.000,00
-                                </p>
-                            </div>
-                        </div>
-                        <button
-                            className="w-100 mt-3 rounded-pill btn btn-danger fs-5"
-                            onClick={() => router.push("/payment")}
-                        >
-                            Bayar
-                        </button>
-                    </div>
-                </div>
+                </form>
             </div>
             <Footer />
         </>

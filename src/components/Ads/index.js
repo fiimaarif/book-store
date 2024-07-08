@@ -11,14 +11,14 @@ function Ads() {
                     </h1>
                 </div>
                 <div className="col-md-6 col-12">
-                    <form class="d-flex" role="search">
+                    <form className="d-flex" role="search">
                         <input
-                            class="form-control me-2"
+                            className="form-control me-2"
                             type="email"
                             placeholder="email address"
                             aria-label="Search"
                         />
-                        <button class="btn btn-danger" type="submit">
+                        <button className="btn btn-danger" type="submit">
                             Subscribe
                         </button>
                     </form>

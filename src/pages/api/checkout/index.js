@@ -8,15 +8,19 @@ export default async (req, res) => {
   }
 
   try {
-    const { customerName, customerEmail, customerAddress, items, totalAmount } = req.body;
+    const { customerName, customerEmail, customerAddress, customerPhone, postalCode, bank, items, totalAmount } = req.body;
 
-    // Simpan pesanan ke database
+    // Simpan pesanan ke database dengan status default PENDING
     const order = await prisma.order.create({
       data: {
         customerName,
         customerEmail,
         customerAddress,
+        customerPhone,
+        postalCode,
+        bank,
         totalAmount,
+        status: 'PENDING',
         items: {
           create: items.map((item) => ({
             bookId: item.id,
