@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Footer from "../Footer";
 import Navbar from "../Navbar";
-import { formatDateTime } from "@/utils/constants";
+import { formatCurrency, formatDateTime } from "@/utils/constants";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 function Payment() {
     const router = useRouter()
     const [timeLeft, setTimeLeft] = useState(24 * 60 * 60 * 1000);
     const [currentTime, setCurrentTime] = useState(new Date());
+    const totalAmount = useSelector((state) => state.cart.totalAmount);
 
     useEffect(() => {
         const countdownInterval = setInterval(() => {
@@ -36,6 +38,12 @@ function Payment() {
     const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
+    const getCurrentDate = () => {
+        const date = new Date();
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        return date.toLocaleDateString('id-ID', options);
+    };
+
     return (
         <div>
             <Navbar />
@@ -43,7 +51,7 @@ function Payment() {
                 <div className="p-2 bg-info text-center rounded">
                     <p>Sisa Waktu Pembayaran Anda</p>
                     <h3 className="text-danger fw-bold">{hours} : {minutes} : {seconds}</h3>
-                    <p>{formatDateTime(currentTime)} WIB</p>
+                    <p>{getCurrentDate()}</p>
                 </div>
                 <div>
                     <div className="p-2 border rounded mt-3">
@@ -54,16 +62,16 @@ function Payment() {
                         <small className="text-muted">Nomor Pesanan</small>
                         <div>1X1J11H1P1</div>
                         <small className="text-muted">Tanggal Pesanan</small>
-                        <div>05 Juli 2024</div>
+                        <div>{getCurrentDate()}</div>
                         <small className="text-muted">
                             Ringkasan Pembayaran
                         </small>
-                        <div className="text-primary">Rp 217.400</div>
-                        <small className="text-muted">Status Pembayaran</small>
-                        <div>Unpaid</div>
+                        <div className="text-primary">
+                        {formatCurrency(totalAmount)}
+                        </div>
                     </div>
                 </div>
-                <button className="w-100 rounded btn btn-success mt-3" onClick={()=> router.push("/")}>Konfirmasi Bayar</button>
+                <button className="w-100 rounded btn btn-success mt-3" onClick={()=> router.push("/user")}>Konfirmasi Bayar</button>
             </div>
             <Footer />
         </div>

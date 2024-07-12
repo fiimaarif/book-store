@@ -20,6 +20,7 @@ model User {
   password String
   role     String   @default("user")
   transactions Transaction[]
+  orders         Order[]
 }
 
 model Book {
@@ -57,20 +58,36 @@ model TransactionDetail {
 
 model Order {
   id              Int         @id @default(autoincrement())
+  userId          Int
+  user            User        @relation(fields: [userId], references: [id])
   customerName    String
   customerEmail   String
   customerAddress String
+  customerPhone   String
+  postalCode      String
+  bank            String
   totalAmount     Float
-  createdAt       DateTime    @default(now())
+  status          OrderStatus @default(PENDING)
   items           OrderItem[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
 }
 
 model OrderItem {
-  id        Int     @id @default(autoincrement())
-  orderId   Int
-  bookId    Int
-  quantity  Int
+  id         Int     @id @default(autoincrement())
+  bookId     Int
+  quantity   Int
   totalPrice Float
-  order     Order   @relation(fields: [orderId], references: [id])
+  orderId    Int
+  order      Order   @relation(fields: [orderId], references: [id])
   book      Book    @relation(fields: [bookId], references: [id])
 }
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  CANCELLED
+}
+
+

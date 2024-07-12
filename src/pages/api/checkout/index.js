@@ -1,18 +1,20 @@
+import { authenticate } from '@/middleware/auth';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export default async (req, res) => {
+const handler = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
   try {
     const { customerName, customerEmail, customerAddress, customerPhone, postalCode, bank, items, totalAmount } = req.body;
-
+    const userId = req.user.id
     // Simpan pesanan ke database dengan status default PENDING
     const order = await prisma.order.create({
       data: {
+        userId,
         customerName,
         customerEmail,
         customerAddress,
@@ -43,3 +45,5 @@ export default async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+export default authenticate(handler)

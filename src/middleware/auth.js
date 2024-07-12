@@ -19,6 +19,7 @@ export const authenticate = (handler) => {
       req.user = decoded;
       return handler(req, res);
     } catch (error) {
+      console.log(error, "sadsd");
       return res.status(401).json({ error: 'Invalid token' });
     }
   };

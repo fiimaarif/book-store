@@ -18,11 +18,13 @@ export default function Checkout() {
 
     const handlePayment = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem('token');
 
         const response = await fetch("/api/checkout", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
                 customerName: namaPenerima,
@@ -239,33 +241,33 @@ export default function Checkout() {
                                 <p className="fw-bold">Ringkasan Pembayaran</p>
                                 <div className="d-flex justify-content-between">
                                     <div className="py-1">Total Harga</div>
-                                    <div>Rp 10.000,00</div>
+                                    <div>{formatCurrency(totalAmount)}</div>
                                 </div>
                                 <div className="d-flex justify-content-between">
                                     <div className="py-1">
                                         Total Biaya Pengiriman
                                     </div>
-                                    <div>Rp 10.000,00</div>
+                                    <div>-</div>
                                 </div>
                                 <div className="d-flex justify-content-between">
                                     <div className="py-1">Biaya Asuransi</div>
-                                    <div>Rp 10.000,00</div>
+                                    <div>-</div>
                                 </div>
                                 <div className="d-flex justify-content-between">
                                     <div className="py-1">Diskon Belanja</div>
-                                    <div>Rp 10.000,00</div>
+                                    <div>-</div>
                                 </div>
                                 <div className="d-flex justify-content-between">
                                     <div className="py-1">
                                         Diskon Pengiriman
                                     </div>
-                                    <div>Rp 10.000,00</div>
+                                    <div>-</div>
                                 </div>
                                 <hr />
                                 <div className="d-flex justify-content-between">
                                     <p className="fw-bold">Total Dibayar</p>
                                     <p className="fw-bold text-primary">
-                                        Rp 100.000,00
+                                    {formatCurrency(totalAmount)}
                                     </p>
                                 </div>
                             </div>

@@ -59,20 +59,12 @@ function CardBook() {
                         <div className="pb-2 text-danger">
                             {formatCurrency(book.price)}
                         </div>
-                        <div className="d-flex justify-content-between align-items-center gap-2">
-                            <button
-                                className="btn btn-success w-75"
-                                onClick={() => routes.push("/checkout")}
-                            >
-                                Beli
-                            </button>
-                            <div>
+                        <div className="text-center bg-success rounded p-1">
                             <ShoppingCart
-                            className="text-danger"
-                            onClick={() => handleCart(book)}
-                            style={{cursor: "pointer"}}
+                                className="text-light"
+                                onClick={() => handleCart(book)}
+                                style={{ cursor: "pointer" }}
                             />
-                            </div>
                         </div>
                     </div>
                 ))}
